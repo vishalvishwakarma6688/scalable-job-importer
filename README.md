@@ -65,40 +65,31 @@ This project implements a **scalable background job import system** that:
 └── README.md
 
 yaml
-Copy code
-
----
 
 ## ⚙️ Environment Variables
 
 ### Backend (`server/.env`)
-```bash
 PORT=4000
 MONGO_URI=mongodb://localhost:27017/job_importer
 REDIS_URL=redis://localhost:6379
 QUEUE_PREFIX=job-importer
 IMPORT_WORKER_CONCURRENCY=5
+
 Frontend (client/.env.local)
-bash
-Copy code
 NEXT_PUBLIC_API_URL=http://localhost:4000/api
+
 🧩 Setup Instructions
 1️⃣ Clone the Repository
-bash
-Copy code
 git clone https://github.com/<your-username>/scalable-job-importer.git
 cd scalable-job-importer
+
 2️⃣ Setup Backend
-bash
-Copy code
 cd server
 npm install
 npm run dev
 Backend runs on http://localhost:4000
 
 3️⃣ Setup Frontend
-bash
-Copy code
 cd ../client
 npm install
 npm run dev
@@ -129,7 +120,7 @@ Auto-refreshes every 30 seconds.
 📊 API Endpoints
 Method	Endpoint	Description
 GET	/api/health	Health check
-POST	/api/import/run	Manually trigger an import (feed URL in body)
+POST /api/import/run	Manually trigger an import (feed URL in body)
 GET	/api/logs	Get all import logs
 GET	/api/logs/:id	Get a specific import log
 
