@@ -3,7 +3,6 @@ const ImportLog = require('../models/ImportLog');
 
 const router = Router();
 
-// ✅ GET all import logs (latest first)
 router.get('/', async (req, res) => {
   try {
     const logs = await ImportLog.find().sort({ createdAt: -1 }).limit(20);
@@ -14,7 +13,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// ✅ GET single import log by ID
 router.get('/:id', async (req, res) => {
   try {
     const log = await ImportLog.findById(req.params.id);

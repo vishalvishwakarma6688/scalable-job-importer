@@ -3,7 +3,7 @@ const { config } = require('./env');
 const { logger } = require('../utils/logger');
 
 const connection = new IORedis(config.redisUrl, {
-  maxRetriesPerRequest: null, // recommended for BullMQ
+  maxRetriesPerRequest: null,
 });
 
 connection.on('connect', () => logger.info('Redis connected'));

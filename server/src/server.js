@@ -3,15 +3,13 @@ const { connectDB } = require('./config/db');
 const { config } = require('./config/env');
 const { logger } = require('./utils/logger');
 const { startImportWorker, stopImportWorker } = require('./workers/import.worker');
-const { startScheduler } = require('./jobs/schedule'); // ✅ add this
+const { startScheduler } = require('./jobs/schedule'); 
 
 async function bootstrap() {
   await connectDB();
 
-  // start worker (BullMQ)
   startImportWorker();
 
-  // ✅ start hourly cron scheduler
   startScheduler();
 
   const app = buildApp();

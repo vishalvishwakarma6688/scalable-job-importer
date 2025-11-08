@@ -4,19 +4,15 @@ const Job = require('../models/Job');
 const ImportLog = require('../models/ImportLog');
 const { logger } = require('../utils/logger');
 
-/**
- * Fetch XML, convert to JSON, import into MongoDB, and return stats.
- */
 async function importJobsFromFeed(sourceUrl) {
     const log = await ImportLog.create({ sourceUrl });
 
     try {
-        // 1. Fetch XML
         const { data: xml } = await axios.get(sourceUrl, { timeout: 15000 });
 
         const parser = new xml2js.Parser({
             explicitArray: false,
-            strict: false, // ✅ allow malformed XML
+            strict: false,
             normalizeTags: true,
             normalize: true,
             trim: true,
@@ -34,7 +30,6 @@ async function importJobsFromFeed(sourceUrl) {
         let failedJobs = 0;
         const failedReasons = [];
 
-        // 3. Process each job
         for (const item of items) {
             try {
                 const externalId = item.guid?._ || item.guid || item.link;
@@ -52,7 +47,7 @@ async function importJobsFromFeed(sourceUrl) {
                 const existing = await Job.findOneAndUpdate(
                     { externalId },
                     { $set: updateData },
-                    { upsert: true, new: false } // new:false => return old doc if existed
+                    { upsert: true, new: false }
                 );
 
                 if (existing) updatedJobs++;
@@ -62,13 +57,11 @@ async function importJobsFromFeed(sourceUrl) {
                 failedReasons.push(err.message);
             }
         }
-
-        // 4. Save log
         log.totalImported = newJobs + updatedJobs;
         log.newJobs = newJobs;
         log.updatedJobs = updatedJobs;
         log.failedJobs = failedJobs;
-        log.failedReasons = failedReasons.slice(0, 10); // store limited
+        log.failedReasons = failedReasons.slice(0, 10);
         log.finishedAt = new Date();
         await log.save();
 

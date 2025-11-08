@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const jobSchema = new mongoose.Schema(
   {
-    externalId: { type: String, required: true, unique: true }, // unique job id from API
+    externalId: { type: String, required: true, unique: true }, 
     title: String,
     link: String,
     company: String,
@@ -10,7 +10,7 @@ const jobSchema = new mongoose.Schema(
     category: String,
     location: String,
     pubDate: Date,
-    rawData: Object, // store raw JSON in case of debugging
+    rawData: Object, 
   },
   { timestamps: true }
 );
